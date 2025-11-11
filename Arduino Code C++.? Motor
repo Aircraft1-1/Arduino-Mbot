@@ -1,0 +1,21 @@
+#include <Arduino.h>
+#include <MeMCore.h>
+
+
+MeDCMotor motor1(M1);
+MeDCMotor motor2(M2);
+
+void setup() {
+  // put your setup code here, to run once:
+  motor1.run(100); // Can be an int from -255 to 255
+  motor2.run(-100);
+  delay(1000);
+  motor1.stop();
+  motor2.stop();
+ 
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
