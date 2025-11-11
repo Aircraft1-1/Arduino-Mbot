@@ -1,0 +1,28 @@
+#include <Arduino.h>
+#include <MeMCore.h>
+
+MeRGBLed led(0,30); 
+  void setup() {
+  // put your setup code here, to run once:
+ led.setpin(13);
+
+     pinMode(A7,INPUT);
+
+     while(analogRead(A7) !=0) ; // Start code when button pushed
+
+}
+
+
+void loop() {
+  // put your main code here, to run repeatedly:
+led.setColor(255,255,255); // Set both Led to white
+ led.show(); // Must use .show() to make new colors take effect
+ delay(500);
+ led.setColorAt(0,255,0,0); // Set LED0 (Right Side) to Red
+ led.setColorAt(1,0,255,0); // Set LED1 (Left Side) to Blue
+ led.show();
+ delay (500);
+ 
+
+
+}
