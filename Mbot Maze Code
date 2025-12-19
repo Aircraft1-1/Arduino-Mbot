@@ -1,0 +1,86 @@
+#include <Arduino.h>
+#include <MeMCore.h>
+#include <stdbool.h>
+
+MeDCMotor motor1(M1);
+MeDCMotor motor2(M2);
+
+
+
+MeUltrasonicSensor ultraSonic(PORT_3);
+
+
+
+
+
+
+
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin(9600);
+}
+
+void loop() {
+  int distance = ultraSonic.distanceCm();
+
+  Serial.print("Distance: ");
+  Serial.print(ultraSonic.distanceCm());
+  Serial.println(" cm");
+  delay(100);
+
+  //Forward if met
+  if(distance > 10) {
+   motor1.run(100);
+   motor2.run(-100);
+  }
+
+  //Stops if met
+  if(distance <=9 ) {
+   motor1.stop();
+   motor2.stop();
+   delay(1000);
+  //1st Check
+   while(ultraSonic.distanceCm()<=9) {
+     motor1.run(0);
+     motor2.run(-100);
+     delay(985);
+    //Used to differentiate from distances used to check
+    int newDistance = ultraSonic.distanceCm();
+    //Action used if 1st Check is met
+    if(newDistance < 9 ) {
+      motor1.stop();
+      motor2.stop();
+      delay(500);
+
+      motor1.run(-100);
+      motor2.run(100);
+      delay(500);
+
+      motor1.run(0);
+      motor2.run(-100);
+      delay(2300);
+
+      motor1.stop();
+      motor2.stop();
+      //Action used if 1st Check is not met
+       if(ultraSonic.distanceCm()> 9) {
+        motor1.stop();
+        motor2.stop();
+        delay(500);
+        
+        motor1.run(100);
+        motor2.run(-100);
+
+        
+     }
+     //Used to go forward if 1st Check is met & the action is completed
+    }else{
+      if(newDistance > 9) {
+        motor1.run(100);
+        motor2.run(-100);
+    
+      }
+     }
+    }
+  }
+}
